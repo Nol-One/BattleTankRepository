@@ -1,13 +1,17 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.25",
+	"EngineAssociation": "{12F61C66-423B-DE56-AB15-AC96D72A8CB7}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "BatlleTank",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"AIModule"
+			]
 		}
 	]
 }
