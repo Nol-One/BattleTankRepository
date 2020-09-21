@@ -2,23 +2,36 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Tank.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
+
+// forward declarations
+class ATank; 
 
 UCLASS()
 class BATLLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-	public:
-		void BeginPlay() override;
+	private:
+		virtual void BeginPlay() override;
 
-		void Tick(float DeltaTime) override;
+		virtual void Tick(float DeltaTime) override;
 
 		ATank* GetControlledTank() const;
 
-	private:
-		void AimTowardsCrosshair(); // Make the tank shoots through where the crosshair is
+		UPROPERTY(EditAnywhere)
+		float CrosshairXLocation = 0.5f;
+
+		UPROPERTY(EditAnywhere)
+		float CrosshairYLocation = 0.33333f;
+
+		UPROPERTY(EditAnywhere)
+		float Reach = 100000.0f;
+
+		void AimTowardsCrosshair();
+
+		bool CrosshairRaycast(FHitResult& Hit); // Make the tank shoots through where the crosshair is
+
+		bool GetCrosshairVector(FVector& AimDirection) const;
 };

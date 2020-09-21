@@ -2,21 +2,20 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "AIController.h"
-#include "Tank.h"
-#include "Engine/World.h"
 #include "TankAIController.generated.h"
+
+// forward declarations
+class ATank; 
 
 UCLASS()
 class BATLLETANK_API ATankAIController : public AAIController
 {
-	public:
-		GENERATED_BODY()
-		
-		void BeginPlay() override;
-
+	GENERATED_BODY()
+	
 	private:
+		virtual void Tick(float DeltaTime) override;
+
 		ATank* GetControlledTank() const;
 
 		ATank* GetPlayerTank() const;

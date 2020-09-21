@@ -2,20 +2,17 @@
 
 
 #include "TankAIController.h"
+#include "CoreMinimal.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/Actor.h"
+#include "Tank.h"
 
-void ATankAIController::BeginPlay()
+void ATankAIController::Tick(float DeltaTime)
 {
-    Super::BeginPlay();
+    Super::Tick(DeltaTime);
 
-    if (!GetPlayerTank())
-    {
-        UE_LOG(LogTemp, Error, TEXT("AI didn't find the player"))
-    }
-
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("AI is looking at %s"), *GetPlayerTank()->GetName())
-    }
+    GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
 }
 
 ATank* ATankAIController::GetControlledTank() const
