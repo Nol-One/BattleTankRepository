@@ -5,23 +5,17 @@
 #include "Tank.h"
 #include "Components/ActorComponent.h"
 #include "Engine/World.h"
-#include "DrawDebugHelpers.h"
 #include "Components/PrimitiveComponent.h"
 #include "Camera/PlayerCameraManager.h"
+#include "TankAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
     Super::BeginPlay();
 
-    if (!GetControlledTank())
-    {
-        UE_LOG(LogTemp, Error, TEXT("Player is NOT controlling a Tank"))
-    }
+    auto TankAimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
 
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Player is controlling %s"), *GetControlledTank()->GetName())
-    }
+    FoundAimingComponent(TankAimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -38,7 +32,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-    if (!GetControlledTank()) {return;}
+    if (!ensure(GetControlledTank())) {return;}
 
     FHitResult Hit;
     if (CrosshairRaycast(Hit))
@@ -60,11 +54,22 @@ bool ATankPlayerController::CrosshairRaycast(FHitResult& Hit)
     auto EndLocation = StartLocation + (AimDirection*Reach);
 
     // ray cast a line into the world that looks for anything visible, excluding skybox
-    if (GetWorld()->LineTraceSingleByChannel(Hit, StartLocation, EndLocation, ECC_Visibility, FCollisionQueryParams(FName(TEXT("")), false, GetOwner())))
+    if 
+    (   
+        GetWorld()->LineTraceSingleByChannel
+        (
+            Hit,
+            StartLocation,
+            EndLocation,
+            ECC_Visibility,
+            FCollisionQueryParams(FName(TEXT("")), false, GetOwner())
+        )
+    )
+    
     {
         return true;
-        DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor( 0 , 255 , 0 ) , false , 0.f , 0 , 5.f);
     }
+
     return false;
     Hit.Location = FVector (0); //in case the ray-cast fail
 }

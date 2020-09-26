@@ -9,7 +9,16 @@
 class UTankBarrel; 
 class UTankTurret;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UENUM()
+enum class EFiringState : uint8
+{
+	NoTarget,
+	Ready,
+	Aiming,
+	Reloading
+};
+
+UCLASS( meta=(BlueprintSpawnableComponent) )
 class BATLLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -17,16 +26,16 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 	public:	
 		void AimAt(FVector HitLocation, float LaunchSpeed);
 
-		void SetBarrelReference(UTankBarrel* BarrelToSet);
+	protected:
+		UFUNCTION(BlueprintCallable, Category = "Aiming")
+		void Initialise (UTankTurret* SetTurret, UTankBarrel* SetBarrel);
 
-		void SetTurretReference(UTankTurret* TurretToSet);
+		UPROPERTY(BlueprintReadOnly, Category = "Crosshair")
+		EFiringState CurrentState = EFiringState::Aiming;
 
 	private:	
-		void MoveBarrel(FVector AimDirection);
+		void MoveTurretBarrelTo(FVector AimDirection);
 
-		void MoveTurret(FVector AimDirection);
-		
 		UTankBarrel* Barrel = nullptr;
-
 		UTankTurret* Turret = nullptr;
 };

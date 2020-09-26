@@ -13,20 +13,25 @@ class BATLLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+	protected:
+		UFUNCTION(BlueprintCallable, Category = "Setup")
+		ATank* GetControlledTank() const;
+
+		UFUNCTION(BlueprintImplementableEvent, Category = "Aiming")
+		void FoundAimingComponent(UTankAimingComponent* TankAimingComponent);
+
 	private:
 		virtual void BeginPlay() override;
 
 		virtual void Tick(float DeltaTime) override;
 
-		ATank* GetControlledTank() const;
-
-		UPROPERTY(EditAnywhere)
+		UPROPERTY(EditDefaultsOnly)
 		float CrosshairXLocation = 0.5f;
 
-		UPROPERTY(EditAnywhere)
+		UPROPERTY(EditDefaultsOnly)
 		float CrosshairYLocation = 0.33333f;
 
-		UPROPERTY(EditAnywhere)
+		UPROPERTY(EditDefaultsOnly)
 		float Reach = 100000.0f;
 
 		void AimTowardsCrosshair();

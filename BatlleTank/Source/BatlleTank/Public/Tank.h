@@ -7,32 +7,35 @@
 
 // forward declarations
 class UTankBarrel; 
-class UTankTurret;
+class AProjectile;
 class UTankAimingComponent;
 
 UCLASS()
 class BATLLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
-
-	protected:
-		UTankAimingComponent* TankAimingComponent = nullptr;
-
+	
 	public:
-		ATank(); //Constructor
-
-		UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-		UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetTurretReference(UTankTurret* Turret);
+		UFUNCTION(BlueprintCallable)
+		void Fire();
 
 		void AimAt(FVector HitLocation);
 
-	private:	
-		// Called to bind functionality to input
-		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	protected:
+		UTankAimingComponent* TankAimingComponent;
 
-		UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 100000.0f;
+	private:	
+		UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float LaunchSpeed = 4000.0f; // sensible default value
+
+		UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		TSubclassOf<AProjectile> Projectile_BP;
+
+		UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float ReloadTimeSeconds = 3.0f;
+
+		// local reference to be used in the firing method 
+		UTankBarrel* Barrel = nullptr;
+
+		float LastFireTime = 0.0f;
 };
