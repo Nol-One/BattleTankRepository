@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright N01 Ltda.
 
 #include "TankAimingComponent.h"
 #include "CoreMinimal.h"
@@ -13,7 +13,7 @@ void UTankAimingComponent::Initialise (UTankTurret* SetTurret, UTankBarrel* SetB
 	Turret = SetTurret;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
+void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	if (!ensure(Barrel)) { return; } // protecting pointers to avoid crashes
 

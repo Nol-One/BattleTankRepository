@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright N01 Ltda.
 
 #pragma once
 
@@ -8,7 +8,6 @@
 // forward declarations
 class UTankBarrel; 
 class AProjectile;
-class UTankAimingComponent;
 
 UCLASS()
 class BATLLETANK_API ATank : public APawn
@@ -18,11 +17,6 @@ class BATLLETANK_API ATank : public APawn
 	public:
 		UFUNCTION(BlueprintCallable)
 		void Fire();
-
-		void AimAt(FVector HitLocation);
-
-	protected:
-		UTankAimingComponent* TankAimingComponent;
 
 	private:	
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")

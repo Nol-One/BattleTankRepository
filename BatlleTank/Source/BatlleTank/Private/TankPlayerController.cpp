@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright N01 Ltda.
 
 #include "TankPlayerController.h"
 #include "CoreMinimal.h"
@@ -38,7 +38,7 @@ void ATankPlayerController::AimTowardsCrosshair()
     if (CrosshairRaycast(Hit))
     {
         FVector HitLocation = Hit.Location;
-        GetControlledTank()->AimAt(HitLocation);
+        GetControlledTank()->FindComponentByClass<UTankAimingComponent>()->AimAt(HitLocation);
     }
 }
 

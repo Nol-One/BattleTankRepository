@@ -1,5 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright N01 Ltda.
 
 #include "TankAIController.h"
 #include "CoreMinimal.h"
@@ -7,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Actor.h"
 #include "Tank.h"
+#include "TankAimingComponent.h"
 
 void ATankAIController::Tick(float DeltaTime)
 {
@@ -17,7 +17,7 @@ void ATankAIController::Tick(float DeltaTime)
 
     if (ensure(PlayerTank && ControlledTank))
     {
-        ControlledTank->AimAt(PlayerTank->GetActorLocation());
+        ControlledTank->FindComponentByClass<UTankAimingComponent>()->AimAt(PlayerTank->GetActorLocation());
 
         ControlledTank->Fire();
 

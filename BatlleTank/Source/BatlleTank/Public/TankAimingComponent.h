@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright N01 Ltda.
 
 #pragma once
 
@@ -24,7 +24,7 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 	public:	
-		void AimAt(FVector HitLocation, float LaunchSpeed);
+		void AimAt(FVector HitLocation);
 
 	protected:
 		UFUNCTION(BlueprintCallable, Category = "Aiming")
@@ -36,6 +36,9 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 	private:	
 		void MoveTurretBarrelTo(FVector AimDirection);
 
+		UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float LaunchSpeed = 4000.0f; // sensible default value
+
 		UTankBarrel* Barrel = nullptr;
-		UTankTurret* Turret = nullptr;
+		UTankTurret* Turret = nullptr;	
 };
