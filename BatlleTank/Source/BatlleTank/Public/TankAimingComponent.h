@@ -11,12 +11,12 @@ class UTankTurret;
 class AProjectile;
 
 UENUM()
-enum class EFiringState : uint8
+enum class EFiringStatus : uint8
 {
 	NoTarget,
-	Ready,
+	Reloading,
 	Aiming,
-	Reloading
+	Ready
 };
 
 UCLASS( meta=(BlueprintSpawnableComponent) )
@@ -35,10 +35,16 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 		void Initialise (UTankTurret* SetTurret, UTankBarrel* SetBarrel);
 
 		UPROPERTY(BlueprintReadOnly, Category = "Crosshair")
-		EFiringState CurrentState = EFiringState::Aiming;
+		EFiringStatus FiringStatus = EFiringStatus::NoTarget;
 
 	private:	
+		UTankAimingComponent(); // constructor
+
+		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
 		void MoveTurretBarrelTo(FVector AimDirection);
+
+		void IsBarrelMoving(FVector AimDirection);
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float LaunchSpeed = 5000.0f; // sensible default value
@@ -50,6 +56,9 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 		float ReloadTimeSeconds = 2.5f;
 
 		float LastFireTime = 0.0f;
+
+		bool bTargetFound = false;
+		bool bIsBarrelMoving = false;
 
 		UTankBarrel* Barrel = nullptr;
 		UTankTurret* Turret = nullptr;	
