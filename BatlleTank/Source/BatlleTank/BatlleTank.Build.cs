@@ -11,6 +11,7 @@ public class BatlleTank : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		
 		bEnforceIWYU = true;
 	}
 }

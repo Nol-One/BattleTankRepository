@@ -1,8 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright N01 Ltda.
 
 #include "TankTurret.h"
-#include "CoreMinimal.h"
 
 void UTankTurret::RotateTurret(float RelativeSpeed)
 {

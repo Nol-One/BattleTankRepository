@@ -1,12 +1,10 @@
 // Copyright N01 Ltda.
 
 #include "TankAIController.h"
-#include "CoreMinimal.h"
+#include "TankAimingComponent.h"
+#include "Tank.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-#include "GameFramework/Actor.h"
-#include "Tank.h"
-#include "TankAimingComponent.h"
 
 void ATankAIController::Tick(float DeltaTime)
 {
@@ -17,9 +15,11 @@ void ATankAIController::Tick(float DeltaTime)
 
     if (ensure(PlayerTank && ControlledTank))
     {
-        ControlledTank->FindComponentByClass<UTankAimingComponent>()->AimAt(PlayerTank->GetActorLocation());
+        auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 
-        ControlledTank->Fire();
+        AimingComponent->AimAt(PlayerTank->GetActorLocation());
+
+        AimingComponent->Fire();
 
         MoveToActor(PlayerTank, StopDistance);
     }

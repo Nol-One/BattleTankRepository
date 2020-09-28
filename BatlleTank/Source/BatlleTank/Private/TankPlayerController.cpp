@@ -1,13 +1,9 @@
 // Copyright N01 Ltda.
 
 #include "TankPlayerController.h"
-#include "CoreMinimal.h"
-#include "Tank.h"
-#include "Components/ActorComponent.h"
-#include "Engine/World.h"
-#include "Components/PrimitiveComponent.h"
-#include "Camera/PlayerCameraManager.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
+#include "Components/PrimitiveComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {

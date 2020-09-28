@@ -1,8 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright N01 Ltda.
 
 #include "TankMovementComponent.h"
-#include "CoreMinimal.h"
 #include "TankTrack.h"
 
 void UTankMovementComponent::Initialise(UTankTrack* SetRightTrack, UTankTrack* SetLeftTrack)

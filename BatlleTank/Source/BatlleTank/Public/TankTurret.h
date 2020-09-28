@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright N01 Ltda.
 
 #pragma once
 
@@ -15,5 +15,5 @@ class BATLLETANK_API UTankTurret : public UStaticMeshComponent
 
 	private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float MaxDegreesPerSecond = 30; // sensible default value
+	float MaxDegreesPerSecond = 50.0f; // sensible default value
 };

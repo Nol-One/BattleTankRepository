@@ -11,6 +11,7 @@ public class BatlleTankTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 		ExtraModuleNames.AddRange( new string[] { "BatlleTank" } );
 
+		bEnforceIWYU = true;
 		bUseUnityBuild = false;
 		bUsePCHFiles = false;
 	}

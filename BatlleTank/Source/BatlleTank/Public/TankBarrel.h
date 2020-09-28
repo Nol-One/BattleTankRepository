@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright N01 Ltda.
 
 #pragma once
 
@@ -15,11 +15,11 @@ class BATLLETANK_API UTankBarrel : public UStaticMeshComponent
 
 	private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float MinElevationDegree = 0; // sensible default value
+	float MinElevationDegree = -5.0f; // sensible default value
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float MaxElevationDegree = 40; // sensible default value
+	float MaxElevationDegree = 40.0f; // sensible default value
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float MaxDegreesPerSecond = 10; // sensible default value
+	float MaxDegreesPerSecond = 20.0f; // sensible default value
 };

@@ -2,16 +2,14 @@
 
 
 #include "Projectile.h"
-#include "CoreMinimal.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Engine/World.h"
 
 
 AProjectile::AProjectile()
 {
     ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
 
-   ProjectileMovement->bAutoActivate = false; // means that no launching occurs when the component is created.
+    ProjectileMovement->bAutoActivate = false; // means that no launching occurs when the component is created.
 }
 
 void AProjectile::LaunchProjectile(float Speed)

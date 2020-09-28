@@ -1,3 +1,4 @@
+// Copyright N01 Ltda.
 
 #pragma once
 

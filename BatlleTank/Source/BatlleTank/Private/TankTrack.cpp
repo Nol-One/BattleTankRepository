@@ -1,6 +1,6 @@
+// Copyright N01 Ltda.
 
 #include "TankTrack.h"
-#include "CoreMinimal.h"
 
 void UTankTrack::SetTrackForce(float Force)
 {
