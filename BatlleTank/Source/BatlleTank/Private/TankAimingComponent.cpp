@@ -8,7 +8,7 @@
 
 UTankAimingComponent::UTankAimingComponent()
 {
-	// this line is here in order to make the tick component actually ticks.
+	// needed in order to make the tick actually ticks.
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -20,7 +20,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringStatus = EFiringStatus::NoTarget;
 	}
-	else if (bIsBarrelMoving)
+	else if (bIsBarrelReady)
 	{
 		FiringStatus = EFiringStatus::Aiming;
 	}
@@ -89,12 +89,12 @@ void UTankAimingComponent::IsBarrelMoving(FVector AimDirection)
 {
 	if(Barrel->GetForwardVector().Equals(AimDirection, 0.1f))
 	{
-		bIsBarrelMoving = false;
+		bIsBarrelReady = false;
 	}
 
 	else
 	{
-		bIsBarrelMoving = true;
+		bIsBarrelReady = true;
 	}
 	
 }

@@ -58,7 +58,7 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 		float LastFireTime = 0.0f;
 
 		bool bTargetFound = false;
-		bool bIsBarrelMoving = false;
+		bool bIsBarrelReady = false;
 
 		UTankBarrel* Barrel = nullptr;
 		UTankTurret* Turret = nullptr;	

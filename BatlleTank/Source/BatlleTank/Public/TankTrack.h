@@ -20,4 +20,9 @@ class BATLLETANK_API UTankTrack : public UStaticMeshComponent
 		// max force per track, in newtons
 		UPROPERTY(EditDefaultsOnly)
 		float MaxDrivingForce = 40000000.0f; // sensible default value, considering 40000kg of tank mass and 10m/s (mass * acceleration)
+
+	private:
+		UTankTrack();
+
+		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 };
