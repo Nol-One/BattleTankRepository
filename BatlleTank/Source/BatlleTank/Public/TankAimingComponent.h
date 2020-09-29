@@ -47,7 +47,7 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 		void IsBarrelMoving(FVector AimDirection);
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSpeed = 5000.0f; // sensible default value
+		float LaunchSpeed = 4000.0f; // sensible default value
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		TSubclassOf<AProjectile> Projectile_BP;

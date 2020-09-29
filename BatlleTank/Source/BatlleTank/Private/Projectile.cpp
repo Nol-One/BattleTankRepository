@@ -4,7 +4,6 @@
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
-
 AProjectile::AProjectile()
 {
     ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));

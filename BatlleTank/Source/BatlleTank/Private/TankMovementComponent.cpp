@@ -30,7 +30,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
     /// by not Supper:: calling here, we're replacing the functionality of the method.
 
     auto AIDirection = MoveVelocity.GetSafeNormal();
-    auto TankDirection = GetOwner()->GetActorForwardVector();
+    auto TankDirection = GetOwner()->GetActorForwardVector().GetSafeNormal();
 
     auto ForwardForce = FVector::DotProduct(AIDirection, TankDirection);
     auto RightForce = FVector::CrossProduct(TankDirection, AIDirection).Z;
