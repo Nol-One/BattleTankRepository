@@ -2,32 +2,23 @@
 
 #include "TankTrack.h"
 
-void UTankTrack::BeginPlay()
+UTankTrack::UTankTrack()
 {
-    Super::BeginPlay();
-
-    OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+    // needed in order to make the tick actually ticks.
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
-    // move the tank
-    DriveTrack();
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    // apply anti-slipping sideways force
     ApplyCounterSlipForce();
-
-    // set force back to zero after using it
-    ClampedForce = 0.0f;
 }
 
 void UTankTrack::SetTrackForce(float Force)
 {
     ClampedForce = FMath::Clamp<float>(ClampedForce + Force, -1.0f, 1.0f);
-}   
 
-void UTankTrack::DriveTrack()
-{
     auto ForceApplied = GetForwardVector() * ClampedForce * MaxDrivingForce;
     auto ForceLocation = GetComponentLocation();
     auto TankRoot = Cast<UMeshComponent>(GetOwner()->GetRootComponent());
@@ -35,15 +26,17 @@ void UTankTrack::DriveTrack()
     if (ensure(TankRoot))
     {
         TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
+        ClampedForce = 0.0f;
     }
-}
+
+}   
 
 void UTankTrack::ApplyCounterSlipForce()
 {
-    // workout required acceleration (to correct) this frame
-    auto SlipSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity()); 
+    // workout required acceleration (to correct) this frame 
+    auto SlipSpeed = FVector::DotProduct(GetComponentVelocity(), GetRightVector()); 
     auto DeltaTime = GetWorld()->GetDeltaSeconds();
-    auto CounterAcceleration = -SlipSpeed / DeltaTime * GetRightVector();
+    auto CounterAcceleration = (-SlipSpeed / DeltaTime) * GetRightVector();
 
     // calculate and apply side-ways (F = m * a)
     auto TankRoot = Cast<UMeshComponent>(GetOwner()->GetRootComponent());

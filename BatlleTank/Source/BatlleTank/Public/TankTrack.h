@@ -22,12 +22,9 @@ class BATLLETANK_API UTankTrack : public UStaticMeshComponent
 		float MaxDrivingForce = 40000000.0f; // sensible default value, considering 40000kg of tank mass and 10m/s (mass * acceleration)
 
 	private:
-		virtual void BeginPlay() override;
-
-		UFUNCTION()
-		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
-
-		void DriveTrack();
+		UTankTrack();
+		
+		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 		void ApplyCounterSlipForce();
 

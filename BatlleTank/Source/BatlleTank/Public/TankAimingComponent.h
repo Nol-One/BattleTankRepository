@@ -13,6 +13,7 @@ class AProjectile;
 UENUM()
 enum class EFiringStatus : uint8
 {
+	OutOfAmmo,
 	NoTarget,
 	Reloading,
 	Aiming,
@@ -25,6 +26,11 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 	public:	
+		EFiringStatus GetFiringStatus() const;
+
+		UFUNCTION(BlueprintCallable, Category = "Firing")
+		int GetAmmoCount() const;
+
 		void AimAt(FVector HitLocation);
 
 		UFUNCTION(BlueprintCallable)
@@ -54,6 +60,9 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float ReloadTimeSeconds = 2.5f;
+
+		UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		int AmmoCount = 0;
 
 		float LastFireTime = 0.0f;
 

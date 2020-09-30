@@ -6,6 +6,10 @@
 #include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
 
+EFiringStatus UTankAimingComponent::GetFiringStatus() const { return FiringStatus; }
+
+int UTankAimingComponent::GetAmmoCount() const { return AmmoCount; }
+
 UTankAimingComponent::UTankAimingComponent()
 {
 	// needed in order to make the tick actually ticks.
@@ -16,11 +20,15 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (!bTargetFound)
+	if(AmmoCount < 1)
+	{
+		FiringStatus= EFiringStatus::OutOfAmmo;
+	}
+	else if (!bTargetFound)
 	{
 		FiringStatus = EFiringStatus::NoTarget;
 	}
-	else if (bIsBarrelReady)
+	else if (bIsBarrelReady && AmmoCount != 0)
 	{
 		FiringStatus = EFiringStatus::Aiming;
 	}
@@ -82,12 +90,15 @@ void UTankAimingComponent::MoveTurretBarrelTo(FVector AimDirection)
 	auto DeltaRotator = AimRotator - BarrelRotator;
 
 	Barrel->ElevateBarrel(DeltaRotator.Pitch);
-	Turret->RotateTurret(DeltaRotator.Yaw);
+
+	// always yaw the shortest way
+	if (FMath::Abs(DeltaRotator.Yaw) > 180) { Turret->RotateTurret(-DeltaRotator.Yaw); }
+	else { Turret->RotateTurret (DeltaRotator.Yaw); }	
 }
 
 void UTankAimingComponent::IsBarrelMoving(FVector AimDirection)
 {
-	if(Barrel->GetForwardVector().Equals(AimDirection, 0.1f))
+	if(Barrel->GetForwardVector().Equals(AimDirection, 0.05f)) // sensible default for precision aiming
 	{
 		bIsBarrelReady = false;
 	}
@@ -103,12 +114,14 @@ void  UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel && Projectile_BP)) {return;} // pointer protection to avoid crashes
 
-	if (FiringStatus == EFiringStatus::Ready)
+	if (FiringStatus == EFiringStatus::Ready || FiringStatus == EFiringStatus::Aiming)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(Projectile_BP, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
 
 		Projectile->LaunchProjectile(LaunchSpeed);
 
 		LastFireTime = GetWorld()->GetTimeSeconds();
+
+		AmmoCount--;
 	}
 }
