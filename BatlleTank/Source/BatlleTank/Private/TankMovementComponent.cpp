@@ -27,7 +27,11 @@ void UTankMovementComponent::MoveRightIntention(float Force)
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
 {
-    /// by not Supper:: calling here, we're replacing the functionality of the method.
+    /*
+    *  by not Supper:: calling here, we're replacing the functionality of the method,
+    *  we are doing it to avoid unnatural movements by the AI.
+    *  Physics-based Fly-by-wire movement instead.
+    */
 
     auto AIDirection = MoveVelocity.GetSafeNormal();
     auto TankDirection = GetOwner()->GetActorForwardVector().GetSafeNormal();

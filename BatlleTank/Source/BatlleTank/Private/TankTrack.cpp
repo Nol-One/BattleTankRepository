@@ -28,7 +28,6 @@ void UTankTrack::SetTrackForce(float Force)
         TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
         ClampedForce = 0.0f;
     }
-
 }   
 
 void UTankTrack::ApplyCounterSlipForce()

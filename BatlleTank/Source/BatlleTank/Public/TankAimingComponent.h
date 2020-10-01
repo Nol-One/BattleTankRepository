@@ -29,7 +29,7 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 		EFiringStatus GetFiringStatus() const;
 
 		UFUNCTION(BlueprintCallable, Category = "Firing")
-		int GetAmmoCount() const;
+		int32 GetAmmoCount() const;
 
 		void AimAt(FVector HitLocation);
 
@@ -53,16 +53,16 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 		void IsBarrelMoving(FVector AimDirection);
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSpeed = 4000.0f; // sensible default value
+		float LaunchSpeed = 6000.0f; // sensible default value
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		TSubclassOf<AProjectile> Projectile_BP;
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float ReloadTimeSeconds = 2.5f;
+		float ReloadTimeSeconds = 2.0f;
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		int AmmoCount = 0;
+		int32 AmmoCount = 20; // sensible default
 
 		float LastFireTime = 0.0f;
 

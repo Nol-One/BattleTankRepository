@@ -8,7 +8,7 @@
 
 EFiringStatus UTankAimingComponent::GetFiringStatus() const { return FiringStatus; }
 
-int UTankAimingComponent::GetAmmoCount() const { return AmmoCount; }
+int32 UTankAimingComponent::GetAmmoCount() const { return AmmoCount; }
 
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -28,7 +28,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringStatus = EFiringStatus::NoTarget;
 	}
-	else if (bIsBarrelReady && AmmoCount != 0)
+	else if (bIsBarrelReady)
 	{
 		FiringStatus = EFiringStatus::Aiming;
 	}

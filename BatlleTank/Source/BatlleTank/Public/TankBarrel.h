@@ -18,7 +18,7 @@ class BATLLETANK_API UTankBarrel : public UStaticMeshComponent
 	float MinElevationDegree = -5.0f; // sensible default value
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float MaxElevationDegree = 40.0f; // sensible default value
+	float MaxElevationDegree = 35.0f; // sensible default value
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float MaxDegreesPerSecond = 20.0f; // sensible default value
