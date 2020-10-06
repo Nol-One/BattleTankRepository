@@ -8,7 +8,7 @@
 /**
  * Used to control how the tracks work and drive the tank around.
  */
-UCLASS(meta = (BlueprintSpawnableComponent))
+UCLASS(meta = (BlueprintSpawnableComponent), hidecategories = ("Cooking", "Mobile", "Variable", "Rendering", "Navigation", "VirtualTexture", "ComponentReplication", "MaterialParameters", "HLOD", "AssetUserData", "Tags", "Events"))
 class BATLLETANK_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
@@ -17,14 +17,14 @@ class BATLLETANK_API UTankTrack : public UStaticMeshComponent
 		UFUNCTION(BlueprintCallable, Category = "Input")
 		void SetTrackForce(float Force);
 
-		// max force per track, in newtons
-		UPROPERTY(EditDefaultsOnly)
-		float MaxDrivingForce = 40000000.0f; // sensible default value, considering 40000kg of tank mass and 10m/s (mass * acceleration)
-
 	private:
 		UTankTrack();
 		
 		virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
+		// max force per track, in newtons
+		UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float MaxDrivingForce = 40000000.0f; // sensible default value, considering 40000kg of tank mass and 10m/s (mass * acceleration)
 
 		void ApplyCounterSlipForce();
 

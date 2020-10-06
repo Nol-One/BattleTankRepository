@@ -8,6 +8,7 @@
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
 class URadialForceComponent;
+class UAudioComponent;
 
 UCLASS()
 class BATLLETANK_API AProjectile : public AActor
@@ -23,20 +24,29 @@ class BATLLETANK_API AProjectile : public AActor
 		UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
-		UPROPERTY(VisibleAnywhere, Category = "Component")
+						// ROOT COMPONENT
+		UPROPERTY(VisibleAnywhere, Category = "Root")
 		UStaticMeshComponent* CollisionMesh = nullptr;
 
-		UPROPERTY(VisibleAnywhere, Category = "Component")
+						// VFX COMPONENTS
+		UPROPERTY(VisibleAnywhere, Category = "VFX")
 		UParticleSystemComponent* LaunchVFX = nullptr;
-
-		UPROPERTY(VisibleAnywhere, Category = "Component")
+		UPROPERTY(VisibleAnywhere, Category = "VFX")
 		UParticleSystemComponent* HitVFX = nullptr;
 
-		UPROPERTY(VisibleAnywhere, Category = "Component")
+						// SFX COMPONENTS
+		UPROPERTY(VisibleAnywhere, Category = "SFX")
+		UAudioComponent* LaunchSFX = nullptr;
+		UPROPERTY(VisibleAnywhere, Category = "SFX")
+		UAudioComponent* HitSFX = nullptr;
+
+						// BALLISTICS COMPONENTS
+		UPROPERTY(VisibleAnywhere, Category = "Settings")
 		URadialForceComponent* KnockbackForce = nullptr;
+		UPROPERTY(EditDefaultsOnly, Category = "Settings")
+		float DestroyDelay = 5.0f; // sensible default value
+		UPROPERTY(EditDefaultsOnly, Category = "Settings")
+		float BaseProjectileDamage = 10.0f; // sensible default value
 
 		UProjectileMovementComponent* ProjectileMovement = nullptr;	
-
-		UPROPERTY(EditDefaultsOnly, Category = Firing)
-		float DestroyDelay = 5; // sensible default value
 };

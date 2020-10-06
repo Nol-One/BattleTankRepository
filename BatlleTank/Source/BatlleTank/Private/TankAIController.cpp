@@ -13,7 +13,7 @@ void ATankAIController::Tick(float DeltaTime)
     auto ControlledTank =  Cast<ATank>(GetPawn());
     auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
-    if (ensure(PlayerTank && ControlledTank))
+    if (PlayerTank && ControlledTank)
     {
         auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 
@@ -28,3 +28,22 @@ void ATankAIController::Tick(float DeltaTime)
     }
 }
 
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+    Super::SetPawn(InPawn);
+
+    if(InPawn)
+    {
+        auto PossedTank = Cast<ATank>(GetPawn());
+        if (!ensure(PossedTank)) { return; }
+
+        // the event is calling our function in order to do something. This is the other side of the unreals magic.
+        PossedTank->ImDead.AddUniqueDynamic(this, &ATankAIController::OnDeath);
+    }
+}
+
+void ATankAIController::OnDeath()
+{
+    auto PossedTank = Cast<ATank>(GetPawn());
+    PossedTank->DetachFromControllerPendingDestroy();
+}

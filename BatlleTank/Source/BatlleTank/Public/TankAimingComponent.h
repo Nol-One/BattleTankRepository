@@ -20,7 +20,7 @@ enum class EFiringStatus : uint8
 	Ready
 };
 
-UCLASS( meta=(BlueprintSpawnableComponent) )
+UCLASS( meta=(BlueprintSpawnableComponent), hidecategories = ("Variable", "Tags", "ComponentReplication", "Cooking", "Events", "AssetUserData", "Collision") )
 class BATLLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -33,12 +33,12 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 
 		void AimAt(FVector HitLocation);
 
-		UFUNCTION(BlueprintCallable)
+		UFUNCTION(BlueprintCallable, Category = "Firing")
 		void Fire();
 
 	protected:
 		UFUNCTION(BlueprintCallable, Category = "Aiming")
-		void Initialise (UTankTurret* SetTurret, UTankBarrel* SetBarrel);
+		void Initialize (UTankTurret* SetTurret, UTankBarrel* SetBarrel);
 
 		UPROPERTY(BlueprintReadOnly, Category = "Crosshair")
 		EFiringStatus FiringStatus = EFiringStatus::NoTarget;
@@ -59,10 +59,10 @@ class BATLLETANK_API UTankAimingComponent : public UActorComponent
 		TSubclassOf<AProjectile> Projectile_BP;
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float ReloadTimeSeconds = 2.0f;
+		float ReloadSeconds = 2.0f;
 
 		UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		int32 AmmoCount = 20; // sensible default
+		int32 StartAmmo = 20; // sensible default
 
 		float LastFireTime = 0.0f;
 

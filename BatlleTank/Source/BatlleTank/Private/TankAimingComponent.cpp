@@ -8,7 +8,7 @@
 
 EFiringStatus UTankAimingComponent::GetFiringStatus() const { return FiringStatus; }
 
-int32 UTankAimingComponent::GetAmmoCount() const { return AmmoCount; }
+int32 UTankAimingComponent::GetAmmoCount() const { return StartAmmo; }
 
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -20,7 +20,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if(AmmoCount < 1)
+	if(StartAmmo < 1)
 	{
 		FiringStatus= EFiringStatus::OutOfAmmo;
 	}
@@ -32,18 +32,17 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringStatus = EFiringStatus::Aiming;
 	}
-	else if (GetWorld()->GetTimeSeconds() - LastFireTime < ReloadTimeSeconds)
+	else if (GetWorld()->GetTimeSeconds() - LastFireTime < ReloadSeconds)
 	{
 		FiringStatus = EFiringStatus::Reloading;
 	}
 	else
 	{
 		FiringStatus = EFiringStatus::Ready;
-	}
-	
+	}	
 }
 
-void UTankAimingComponent::Initialise (UTankTurret* SetTurret, UTankBarrel* SetBarrel)
+void UTankAimingComponent::Initialize (UTankTurret* SetTurret, UTankBarrel* SetBarrel)
 {
 	Barrel = SetBarrel;
 	Turret = SetTurret;
@@ -98,7 +97,7 @@ void UTankAimingComponent::MoveTurretBarrelTo(FVector AimDirection)
 
 void UTankAimingComponent::IsBarrelMoving(FVector AimDirection)
 {
-	if(Barrel->GetForwardVector().Equals(AimDirection, 0.05f)) // sensible default for precision aiming
+	if(Barrel->GetForwardVector().Equals(AimDirection, 0.02f)) // sensible default for precision aiming
 	{
 		bIsBarrelReady = false;
 	}
@@ -122,6 +121,6 @@ void  UTankAimingComponent::Fire()
 
 		LastFireTime = GetWorld()->GetTimeSeconds();
 
-		AmmoCount--;
+		StartAmmo--;
 	}
 }

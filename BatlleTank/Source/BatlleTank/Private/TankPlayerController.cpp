@@ -9,9 +9,13 @@ void ATankPlayerController::BeginPlay()
 {
     Super::BeginPlay();
 
+    if(!ensure(GetControlledTank())) { return; }
+
     auto TankAimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
 
     FoundAimingComponent(TankAimingComponent);
+
+    GetControlledTank()->ImDead.AddUniqueDynamic(this, &ATankPlayerController::OnDeath);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -21,6 +25,11 @@ void ATankPlayerController::Tick(float DeltaTime)
     AimTowardsCrosshair();
 }
 
+void ATankPlayerController::OnDeath()
+{
+    StartSpectatingOnly();
+}
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
     return Cast<ATank>(GetPawn());
@@ -28,7 +37,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-    if (!ensure(GetControlledTank())) {return;}
+    if (!GetControlledTank()) {return;}
 
     FHitResult Hit;
     if (CrosshairRaycast(Hit))
@@ -49,7 +58,7 @@ bool ATankPlayerController::CrosshairRaycast(FHitResult& Hit)
     auto StartLocation = PlayerCameraManager->GetCameraLocation();
     auto EndLocation = StartLocation + (AimDirection*Reach);
 
-    // ray cast a line into the world that looks for anything visible, excluding skybox
+    // ray cast a line into the world that looks for anything the camera can see, excluding skybox
     if 
     (   
         GetWorld()->LineTraceSingleByChannel
@@ -57,7 +66,7 @@ bool ATankPlayerController::CrosshairRaycast(FHitResult& Hit)
             Hit,
             StartLocation,
             EndLocation,
-            ECC_Visibility,
+            ECC_Camera, // OLD ECC_Visibility
             FCollisionQueryParams(FName(TEXT("")), false, GetOwner())
         )
     )

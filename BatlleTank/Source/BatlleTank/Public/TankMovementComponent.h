@@ -10,14 +10,14 @@ class UTankTrack;
 /**
  * Useful class created in order to add a fly-by-wire layer to make AI and Player controls fair.
  */
-UCLASS( meta=(BlueprintSpawnableComponent) )
+UCLASS( meta=(BlueprintSpawnableComponent), hidecategories = ("Variable", "Tags", "ComponentReplication", "Cooking", "Events", "AssetUserData"))
 class BATLLETANK_API UTankMovementComponent : public UNavMovementComponent
 {
 	GENERATED_BODY()
 	
 	public:
 		UFUNCTION(BlueprintCallable, Category = "Movement")
-		void Initialise(UTankTrack* SetRightTrack, UTankTrack* SetLeftTrack);
+		void Initialize(UTankTrack* SetRightTrack, UTankTrack* SetLeftTrack);
 
 		UFUNCTION(BlueprintCallable, Category = "Movement")
 		void MoveForwardIntention(float Force);

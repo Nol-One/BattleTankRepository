@@ -8,7 +8,7 @@
 // forward declarations
 class ATank; 
 
-UCLASS()
+UCLASS(hidecategories = ("Input", "Game", "LOD", "Cooking"))
 class BATLLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
@@ -17,7 +17,7 @@ class BATLLETANK_API ATankPlayerController : public APlayerController
 		UFUNCTION(BlueprintCallable, Category = "Setup")
 		ATank* GetControlledTank() const;
 
-		UFUNCTION(BlueprintImplementableEvent, Category = "Aiming")
+		UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void FoundAimingComponent(UTankAimingComponent* TankAimingComponent);
 
 	private:
@@ -25,13 +25,16 @@ class BATLLETANK_API ATankPlayerController : public APlayerController
 
 		virtual void Tick(float DeltaTime) override;
 
-		UPROPERTY(EditDefaultsOnly)
+		UFUNCTION()
+		void OnDeath();
+
+		UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float CrosshairXLocation = 0.5f;
 
-		UPROPERTY(EditDefaultsOnly)
+		UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float CrosshairYLocation = 0.33333f;
 
-		UPROPERTY(EditDefaultsOnly)
+		UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float Reach = 100000.0f;
 
 		void AimTowardsCrosshair();

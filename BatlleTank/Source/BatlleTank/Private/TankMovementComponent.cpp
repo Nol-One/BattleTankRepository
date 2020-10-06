@@ -3,7 +3,7 @@
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
 
-void UTankMovementComponent::Initialise(UTankTrack* SetRightTrack, UTankTrack* SetLeftTrack)
+void UTankMovementComponent::Initialize(UTankTrack* SetRightTrack, UTankTrack* SetLeftTrack)
 {
     RightTrack = SetRightTrack;
     LeftTrack = SetLeftTrack;
@@ -29,7 +29,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 {
     /*
     *  by not Supper:: calling here, we're replacing the functionality of the method,
-    *  we are doing it to avoid unnatural movements by the AI.
+    *  doing it to avoid unnatural movements by the AI.
     *  Physics-based Fly-by-wire movement instead.
     */
 
