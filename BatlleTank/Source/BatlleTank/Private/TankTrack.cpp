@@ -1,49 +1,50 @@
 // Copyright N01 Ltda.
 
 #include "TankTrack.h"
-
-UTankTrack::UTankTrack()
-{
-    // needed in order to make the tick actually ticks.
-	PrimaryComponentTick.bCanEverTick = true;
-}
-
-void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-    ApplyCounterSlipForce();
-}
+#include "SprungWheel.h"
+#include "SpawnPoint.h"
 
 void UTankTrack::SetTrackForce(float Force)
 {
-    ClampedForce = FMath::Clamp<float>(ClampedForce + Force, -1.0f, 1.0f);
-
-    auto ForceApplied = GetForwardVector() * ClampedForce * MaxDrivingForce;
-    auto ForceLocation = GetComponentLocation();
-    auto TankRoot = Cast<UMeshComponent>(GetOwner()->GetRootComponent());
-
-    if (ensure(TankRoot))
-    {
-        TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
-        ClampedForce = 0.0f;
-    }
+    auto ClampedForce = FMath::Clamp<float>(Force, -1.0f, 1.0f);
+    AddTrackForce(ClampedForce);
 }   
 
-void UTankTrack::ApplyCounterSlipForce()
+TArray<ASprungWheel*> UTankTrack::GetWheels() const
 {
-    // workout required acceleration (to correct) this frame 
-    auto SlipSpeed = FVector::DotProduct(GetComponentVelocity(), GetRightVector()); 
-    auto DeltaTime = GetWorld()->GetDeltaSeconds();
-    auto CounterAcceleration = (-SlipSpeed / DeltaTime) * GetRightVector();
+    TArray<ASprungWheel*> ResultArray;
+    TArray<USceneComponent*> Children; // spawn points array
+    GetChildrenComponents(true, Children);
 
-    // calculate and apply side-ways (F = m * a)
-    auto TankRoot = Cast<UMeshComponent>(GetOwner()->GetRootComponent());
-    auto CounterSlipForce = (TankRoot->GetMass() * CounterAcceleration) / 2; // divided by two, hence there's two tracks
+    for(USceneComponent* Child : Children) // Child type must be equivalent to the spawn point array (children)
+    {
+        auto SpawnPoint = Cast<USpawnPoint>(Child);
+        if (!SpawnPoint) continue;
 
-    // apply counter force
-    TankRoot->AddForce(CounterSlipForce);
+        auto SprungWheel = Cast<ASprungWheel>(SpawnPoint->GetSpawnedActor());
+        if (!SprungWheel) continue;
+
+        ResultArray.Add(SprungWheel);
+    }
+
+    return ResultArray;
 }
+
+void UTankTrack::AddTrackForce(float ClampedForce)
+{
+    auto ForceApplied = ClampedForce * MaxDrivingForce;
+
+    auto Wheels = GetWheels();
+
+    auto ForcePerWheel = ForceApplied / Wheels.Num();
+
+    for (ASprungWheel* Wheel : Wheels)
+    {
+        Wheel->AddDrivingForce(ForcePerWheel);
+    }
+}
+
+
 
 
 

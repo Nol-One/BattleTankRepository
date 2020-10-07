@@ -7,6 +7,9 @@
 
 ASprungWheel::ASprungWheel()
 {
+	PrimaryActorTick.bCanEverTick = true; // set true in order for tick to work.
+	PrimaryActorTick.TickGroup = TG_PostPhysics;
+
 	MassAxleConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("MassAxleConstraint"));
 	SetRootComponent(MassAxleConstraint);
 
@@ -14,6 +17,7 @@ ASprungWheel::ASprungWheel()
 	Axle->SetupAttachment(MassAxleConstraint);
 
 	Wheel = CreateDefaultSubobject<USphereComponent>(FName("Wheel"));
+	Wheel->SetNotifyRigidBodyCollision(true);
 	Wheel->SetupAttachment(Axle);
 
 	AxleWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("AxleWheelConstraint"));
@@ -25,6 +29,19 @@ void ASprungWheel::BeginPlay()
 	Super::BeginPlay();	
 
 	SetupConstraint();
+
+	// setting up what the delegate will call
+	Wheel->OnComponentHit.AddDynamic(this, &ASprungWheel::OnHit);
+}
+
+void ASprungWheel::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if(GetWorld()->TickGroup == TG_PostPhysics)
+	{
+		TotalForceThisFrame = 0.0;
+	}
 }
 
 void ASprungWheel::SetupConstraint()
@@ -35,6 +52,16 @@ void ASprungWheel::SetupConstraint()
 	
 	MassAxleConstraint->SetConstrainedComponents(BodyRoot, NAME_None, Axle, NAME_None);
 	AxleWheelConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);
+}
+
+void ASprungWheel::AddDrivingForce(float Force)
+{
+	TotalForceThisFrame += Force;
+}
+
+void ASprungWheel::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Wheel->AddForce(Axle->GetForwardVector() * TotalForceThisFrame);
 }
 
 
